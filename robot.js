@@ -35,16 +35,47 @@ const roads = [
     }
   
     move(destination) {
+    // Checks if where we are in roadgraph does not have destination as possible route
       if (!roadGraph[this.place].includes(destination)) {
         return this;
       } else {
-        let parcels = this.parcels.map(p => {
-          if (p.place != this.place) return p;
-          return {place: destination, address: p.address};
-        }).filter(p => p.place != p.address);
+        let parcels = this.parcels.map(parcel => {
+        //   console.log(p)
+        //   console.log("")
+        //   console.log(this)
+        //   console.log("")
+          if (parcel.place != this.place) {
+            // console.log(parcel);
+            // console.log(this);  
+            return parcel;
+          } else {
+            console.log(parcel);
+            console.log(this); 
+            return {place: destination, address: parcel.address}; 
+          }
+        }).filter(parcel => parcel.place != parcel.address);
         return new VillageState(destination, parcels);
       }
     }
   }
   
+  let first = new VillageState(
+    "Post Office",
+    [{place: "Post Office", address: "Alice's House"}]
+  );
+  let next = first.move("Alice's House");
+  let secondStep = next.move("Cabin"); 
+  
+  function runRobot(state, robot, memory) {
+    for (let turn = 0;; turn++) {
+      if (state.parcels.length == 0) {
+        console.log(`Done in ${turn} turns`);
+        break;
+      }
+      let action = robot(state, memory);
+      state = state.move(action.direction);
+      memory = action.memory;
+      console.log(`Moved to ${action.direction}`);
+    }
+  }
   
