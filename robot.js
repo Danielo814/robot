@@ -40,17 +40,15 @@ const roads = [
         return this;
       } else {
         let parcels = this.parcels.map(parcel => {
-        //   console.log(p)
-        //   console.log("")
-        //   console.log(this)
-        //   console.log("")
           if (parcel.place != this.place) {
-            // console.log(parcel);
-            // console.log(this);  
+            // if parcel came from a different starting point, return parcel
             return parcel;
           } else {
-            console.log(parcel);
-            console.log(this); 
+            console.log(parcel.address);
+            console.log(this);
+            // if parcel's coming from this place, modify parcel element so that the place propertys
+            // value is equal to the destination set in move, and set its address equal to where it
+            // needs to be delivered
             return {place: destination, address: parcel.address}; 
           }
         }).filter(parcel => parcel.place != parcel.address);
@@ -64,27 +62,41 @@ const roads = [
     [{place: "Post Office", address: "Alice's House"}]
   );
   let next = first.move("Alice's House");
-  let secondStep = next.move("Cabin"); 
   
-  function runRobot(state, robot, memory) {
-    for (let turn = 0;; turn++) {
-      if (state.parcels.length == 0) {
-        console.log(`Done in ${turn} turns`);
-        break;
-      }
-      let action = robot(state, memory);
-      state = state.move(action.direction);
-      memory = action.memory;
-      console.log(`Moved to ${action.direction}`);
-    }
-  }
+  // function runRobot(state, robot, memory) {
+  //   for (let turn = 0;; turn++) {
+  //     if (state.parcels.length == 0) {
+  //       console.log(`Done in ${turn} turns`);
+  //       break;
+  //     }
+  //     let action = robot(state, memory);
+  //     state = state.move(action.direction);
+  //     memory = action.memory;
+  //     console.log(`Moved to ${action.direction}`);
+  //   }
+  // }
 
-  function randomPick(array) {
-    let choice = Math.floor(Math.random() * array.length);
-    return array[choice];
-  }
+  // function randomPick(array) {
+  //   let choice = Math.floor(Math.random() * array.length);
+  //   return array[choice];
+  // }
   
-  function randomRobot(state) {
-    return {direction: randomPick(roadGraph[state.place])};
-  }
+  // function randomRobot(state) {
+  //   return {direction: randomPick(roadGraph[state.place])};
+  // }
+
+  // VillageState.random = function(parcelCount = 5) {
+  //   let parcels = [];
+  //   for (let i = 0; i < parcelCount; i++) {
+  //     let address = randomPick(Object.keys(roadGraph));
+  //     let place;
+  //     do {
+  //       place = randomPick(Object.keys(roadGraph));
+  //     } while (place == address);
+  //     parcels.push({place, address});
+  //   }
+  //   return new VillageState("Post Office", parcels);
+  // };
+
+  // runRobot(VillageState.random(), randomRobot);
   
